@@ -76,7 +76,6 @@ class _ImageListByBreedAndSuBBreedState
                     items: apiProvider.subBreedsList,
                     onChanged: (newValue) {
                       controllerProvider.subBreedController.text = newValue!;
-                      print('Selected: ${controllerProvider.subBreedController.text}');
                     },
                     hintText: 'Select Sub-Breed',
                     controller: controllerProvider.subBreedController,

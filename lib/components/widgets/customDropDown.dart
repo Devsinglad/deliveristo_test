@@ -230,36 +230,3 @@ class _CustomSubBreedDropdownFormFieldState extends State<CustomSubBreedDropdown
     );
   }
 }
-
-
-
-class CustomDropdown<T> extends StatelessWidget {
-  final List<T> items;
-  final T? selectedValue;
-  final String hintText;
-  final ValueChanged<T?> onChanged;
-  final Function() onTap;
-
-  CustomDropdown({
-    required this.items,
-    required this.selectedValue,
-    required this.hintText,
-    required this.onChanged, required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<T>(
-      onTap: onTap,
-      value: selectedValue,
-      hint: Text(hintText), // Set the hint text
-      onChanged: onChanged,
-      items: items.map((item) {
-        return DropdownMenuItem<T>(
-          value: item,
-          child: Text(item.toString()), // Customize the appearance of each item
-        );
-      }).toList(),
-    );
-  }
-}

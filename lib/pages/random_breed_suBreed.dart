@@ -52,7 +52,6 @@ bool isLoading=false;
                       controllerProvider.subBreedController.clear();
                       setState(() {
                       });
-                      print('Selected: ${controllerProvider.breedController.text}');
                     },
                     hintText: 'Select Dog Breed',
                     controller: controllerProvider.breedController,
@@ -72,7 +71,6 @@ bool isLoading=false;
                     items: apiProvider.subBreedsList,
                     onChanged: (newValue) {
                       controllerProvider.subBreedController.text = newValue!;
-                      print('Selected: ${controllerProvider.subBreedController.text}');
                     },
                     hintText: 'Select Sub-Breed',
                     controller: controllerProvider.subBreedController,
