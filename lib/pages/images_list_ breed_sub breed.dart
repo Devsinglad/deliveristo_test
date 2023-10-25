@@ -1,15 +1,17 @@
-
-
 import 'package:deliveristo_test/components/imports/imports.dart';
 
 class ImageListByBreedAndSuBBreed extends StatefulWidget {
   const ImageListByBreedAndSuBBreed({super.key});
 
   @override
-  State<ImageListByBreedAndSuBBreed> createState() => _ImageListByBreedAndSuBBreedState();
+  State<ImageListByBreedAndSuBBreed> createState() =>
+      _ImageListByBreedAndSuBBreedState();
 }
 
-class _ImageListByBreedAndSuBBreedState extends State<ImageListByBreedAndSuBBreed> {
+class _ImageListByBreedAndSuBBreedState
+    extends State<ImageListByBreedAndSuBBreed> {
+  bool isLoading = false;
+
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
@@ -18,6 +20,7 @@ class _ImageListByBreedAndSuBBreedState extends State<ImageListByBreedAndSuBBree
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var controllerProvider = Provider.of<SearchingController>(context);
@@ -25,7 +28,7 @@ class _ImageListByBreedAndSuBBreedState extends State<ImageListByBreedAndSuBBree
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-            onTap: (){
+            onTap: () {
               controllerProvider.breedController.clear();
               controllerProvider.subBreedController.clear();
               apiProvider.subBreedAllImages.clear();
@@ -43,14 +46,12 @@ class _ImageListByBreedAndSuBBreedState extends State<ImageListByBreedAndSuBBree
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: CustomDropdownFormField(
+                  child: CustomBreedDropdownFormField(
                     items: apiProvider.breedsList,
                     onChanged: (newValue) {
                       controllerProvider.breedController.text = newValue!;
-                      print(
-                          'Selected: ${controllerProvider.breedController.text}');
-                      apiProvider.getSubBreedList(
-                          controllerProvider.breedController.text, context);
+                      print('Selected: ${controllerProvider.breedController.text}');
+                      apiProvider.getSubBreedList(controllerProvider.breedController.text, context);
                     },
                     hintText: 'Select Dog Breed',
                     controller: controllerProvider.breedController,
@@ -58,13 +59,14 @@ class _ImageListByBreedAndSuBBreedState extends State<ImageListByBreedAndSuBBree
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: CustomDropdownFormField(
+                  child: CustomSubBreedDropdownFormField(
                     onTap: () {
                       if (apiProvider.subBreedsList.isEmpty) {
                         ToastService.showToast(context,
                             'No Sub Breed available for the selected dog breed');
                       }
                     },
+                    selectedValue:'${apiProvider.subBreedsList.isNotEmpty?apiProvider.subBreedsList[0].toString():null}',
                     items: apiProvider.subBreedsList,
                     onChanged: (newValue) {
                       controllerProvider.subBreedController.text = newValue!;
@@ -79,11 +81,17 @@ class _ImageListByBreedAndSuBBreedState extends State<ImageListByBreedAndSuBBree
             ),
             const SizedBox(height: 20),
             CustomButton(
-              onPressed: () {
-                apiProvider.getSubBreedAllImages(
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                await apiProvider.getSubBreedAllImages(
                     controllerProvider.breedController.text,
                     controllerProvider.subBreedController.text,
                     context);
+                setState(() {
+                  isLoading = true;
+                });
               },
               height: 50,
               width: double.infinity,
@@ -95,22 +103,26 @@ class _ImageListByBreedAndSuBBreedState extends State<ImageListByBreedAndSuBBree
               ),
             ),
             const SizedBox(height: 20),
-            apiProvider.showAllSubImages?Expanded(
-              child: ListView.builder(
-                itemCount: apiProvider.subBreedAllImages.length,
-                itemBuilder: (context, index) {
-                  return CustomButton(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    height: 200,
-                    width: 100,
-                    widget: Image.network(
-                      apiProvider.subBreedAllImages[index],
-                      fit: BoxFit.cover,
+            Visibility(
+                visible: isLoading, child: const CircularProgressIndicator()),
+            apiProvider.showAllSubImages
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: apiProvider.subBreedAllImages.length,
+                      itemBuilder: (context, index) {
+                        return CustomButton(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          height: 200,
+                          width: 100,
+                          widget: Image.network(
+                            apiProvider.subBreedAllImages[index],
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ):const SizedBox.shrink(),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),

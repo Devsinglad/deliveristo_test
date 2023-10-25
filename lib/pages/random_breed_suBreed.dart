@@ -21,11 +21,13 @@ class _RandomImageByBreedAndSubPageState
     });
     super.initState();
   }
-
+bool isLoading=false;
+  List<String> uniquelist=[];
   @override
   Widget build(BuildContext context) {
     var controllerProvider = Provider.of<SearchingController>(context);
     var apiProvider = Provider.of<FetchDogData>(context);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -50,19 +52,18 @@ class _RandomImageByBreedAndSubPageState
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: CustomDropdownFormField(
+                  child: CustomBreedDropdownFormField(
                     items: apiProvider.breedsList,
                     onChanged: (newValue) {
                       controllerProvider.breedController.text = newValue!;
+                      apiProvider.subBreedsList.clear();
+                      controllerProvider.subBreedController.clear();
+                      setState(() {
+
+                      });
                       print(
                           'Selected: ${controllerProvider.breedController.text}');
-                      apiProvider.getSubBreedList(
-                          controllerProvider.breedController.text, context);
-                      if (apiProvider.subBreedsList == []) {
-                        ToastService.showToast(context,
-                            'No Sub Breed available for the selected dog breed');
-                      }
-                      setState(() {});
+
                     },
                     hintText: 'Select Dog Breed',
                     controller: controllerProvider.breedController,
@@ -70,13 +71,19 @@ class _RandomImageByBreedAndSubPageState
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: CustomDropdownFormField(
-                    onTap: () {
+                  child: CustomSubBreedDropdownFormField(
+                    onTap: () async {
+                     await apiProvider.getSubBreedList(
+                          controllerProvider.breedController.text, context);
+                     List<String> countries = apiProvider.subBreedsList;
+                     var seen = <String>{};
+                     uniquelist = countries.where((country) => seen.add(country)).toList();
                       if (apiProvider.subBreedsList.isEmpty) {
                         ToastService.showToast(context,
                             'No Sub Breed available for the selected dog breed');
                       }
                     },
+                    selectedValue: apiProvider.subBreedsList.isNotEmpty?uniquelist[0]:'',
                     items: apiProvider.subBreedsList,
                     onChanged: (newValue) {
                       controllerProvider.subBreedController.text = newValue!;
@@ -91,11 +98,19 @@ class _RandomImageByBreedAndSubPageState
             ),
             const SizedBox(height: 20),
             CustomButton(
-              onPressed: () {
-                apiProvider.getSubBreedRandomImages(
+              onPressed: () async {
+                setState(() {
+                  isLoading=true;
+
+                });
+                 await apiProvider.getSubBreedRandomImages(
                     controllerProvider.breedController.text,
                     controllerProvider.subBreedController.text,
                     context);
+                setState(() {
+                  isLoading=false;
+
+                });
               },
               height: 50,
               width: double.infinity,
@@ -107,6 +122,10 @@ class _RandomImageByBreedAndSubPageState
               ),
             ),
             const SizedBox(height: 20),
+            Visibility(
+              visible: isLoading,
+              child: CircularProgressIndicator(), // Loading indicator
+            ),
             apiProvider.showRandomSubImages?Expanded(
               child: ListView.builder(
                 itemCount: apiProvider.subBreedRandomImages.length,

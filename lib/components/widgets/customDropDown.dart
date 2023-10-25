@@ -1,6 +1,6 @@
 import 'package:deliveristo_test/components/imports/imports.dart';
 
-class CustomDropdownFormField extends StatefulWidget {
+class CustomBreedDropdownFormField extends StatefulWidget {
   final TextEditingController? controller;
   final String hintText;
   final Color? fillColor;
@@ -10,7 +10,7 @@ class CustomDropdownFormField extends StatefulWidget {
   final Function(String?)? onChanged;
   final Function()? onTap;
 
-  const CustomDropdownFormField({
+  const CustomBreedDropdownFormField({
     Key? key,
     this.controller,
     required this.hintText,
@@ -23,10 +23,10 @@ class CustomDropdownFormField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomDropdownFormFieldState createState() => _CustomDropdownFormFieldState();
+  _CustomBreedDropdownFormFieldState createState() => _CustomBreedDropdownFormFieldState();
 }
 
-class _CustomDropdownFormFieldState extends State<CustomDropdownFormField> {
+class _CustomBreedDropdownFormFieldState extends State<CustomBreedDropdownFormField> {
   String? selectedValue;
 
   @override
@@ -110,6 +110,120 @@ class _CustomDropdownFormFieldState extends State<CustomDropdownFormField> {
                 ),
               );
             }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomSubBreedDropdownFormField extends StatefulWidget {
+  final TextEditingController? controller;
+  final String hintText;
+  final Color? fillColor;
+  final Color? borderColor;
+  final List<String> items;
+  final EdgeInsetsGeometry? cPadding;
+  final Function(String?)? onChanged;
+  final Function()? onTap;
+  final String selectedValue;
+
+  const CustomSubBreedDropdownFormField({
+    Key? key,
+    this.controller,
+    required this.hintText,
+    this.cPadding,
+    this.fillColor,
+    this.borderColor,
+    required this.items,
+    required this.onChanged,
+    this.onTap, required this.selectedValue,
+  }) : super(key: key);
+
+  @override
+  _CustomSubBreedDropdownFormFieldState createState() => _CustomSubBreedDropdownFormFieldState();
+}
+
+class _CustomSubBreedDropdownFormFieldState extends State<CustomSubBreedDropdownFormField> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7.0),
+      child: SizedBox(
+        height: 53,
+        child: InkWell(
+          onTap: widget.onTap,
+          child: DropdownButtonHideUnderline(
+            child: DropdownButtonFormField<String>(
+              iconSize: 0,
+              value: widget.selectedValue,
+              onChanged: widget.onChanged,
+              onSaved: (value) {
+                widget.controller?.text = value!;
+              },
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: Theme.of(context).dividerColor,
+              ),
+              decoration: InputDecoration(
+                contentPadding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                hintText: widget.hintText,
+                hintStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  color: Theme.of(context).canvasColor,
+                ),
+                fillColor: widget.fillColor ?? Theme.of(context).dividerColor,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: 0.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(
+                    color: widget.borderColor ?? Theme.of(context).primaryColor,
+                    width: 0.5,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(
+                    color: widget.borderColor ?? Theme.of(context).canvasColor,
+                    width: 0.5,
+                  ),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide(
+                    color: widget.borderColor ?? Theme.of(context).canvasColor,
+                    width: 0.5,
+                  ),
+                ),
+                suffixIcon: const Icon(
+                  Icons.keyboard_arrow_down_outlined,
+                  color: Colors.black,
+                  size: 24,
+                ),
+              ),
+              items: widget.items.toSet().toList().map((item) {
+                return DropdownMenuItem(
+                  value: item,
+                  child: CustomText(
+                    title: item,
+                    fontSize: 14,
+                    color: Colors.black,
+                    weight: FontWeight.w400,
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ),
       ),
