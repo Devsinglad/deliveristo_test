@@ -212,7 +212,7 @@ class _CustomSubBreedDropdownFormFieldState extends State<CustomSubBreedDropdown
                   size: 24,
                 ),
               ),
-              items: widget.items.toSet().toList().map((item) {
+              items: widget.items.toList().map((item) {
                 return DropdownMenuItem(
                   value: item,
                   child: CustomText(

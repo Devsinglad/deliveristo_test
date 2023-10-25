@@ -20,6 +20,7 @@ class _ImageListByBreedAndSuBBreedState
     });
     super.initState();
   }
+  List<String> uniqueList=[];
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +61,18 @@ class _ImageListByBreedAndSuBBreedState
                 const SizedBox(width: 10),
                 Expanded(
                   child: CustomSubBreedDropdownFormField(
-                    onTap: () {
+                    onTap: () async {
+                      await apiProvider.getSubBreedList(
+                          controllerProvider.breedController.text, context);
+                      List<String> subBreed = apiProvider.subBreedsList;
+                      var addedList = <String>{};
+                      uniqueList = subBreed.where((country) => addedList.add(country)).toList();
                       if (apiProvider.subBreedsList.isEmpty) {
                         ToastService.showToast(context,
                             'No Sub Breed available for the selected dog breed');
                       }
                     },
-                    selectedValue:'${apiProvider.subBreedsList.isNotEmpty?apiProvider.subBreedsList[0].toString():null}',
+                    selectedValue: apiProvider.subBreedsList.isNotEmpty?uniqueList[0]:'',
                     items: apiProvider.subBreedsList,
                     onChanged: (newValue) {
                       controllerProvider.subBreedController.text = newValue!;

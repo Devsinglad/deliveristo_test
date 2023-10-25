@@ -13,6 +13,13 @@ class FetchDogData extends ChangeNotifier{
   bool showAllImages=false;
   bool showRandomSubImages=false;
   bool showAllSubImages=false;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+  void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
   Future<void> getDogList() async {
     try {
       var client = http.Client();

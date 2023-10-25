@@ -22,7 +22,7 @@ class _RandomImageByBreedAndSubPageState
     super.initState();
   }
 bool isLoading=false;
-  List<String> uniquelist=[];
+  List<String> uniqueList=[];
   @override
   Widget build(BuildContext context) {
     var controllerProvider = Provider.of<SearchingController>(context);
@@ -63,7 +63,6 @@ bool isLoading=false;
                       });
                       print(
                           'Selected: ${controllerProvider.breedController.text}');
-
                     },
                     hintText: 'Select Dog Breed',
                     controller: controllerProvider.breedController,
@@ -75,15 +74,15 @@ bool isLoading=false;
                     onTap: () async {
                      await apiProvider.getSubBreedList(
                           controllerProvider.breedController.text, context);
-                     List<String> countries = apiProvider.subBreedsList;
-                     var seen = <String>{};
-                     uniquelist = countries.where((country) => seen.add(country)).toList();
+                     List<String> subBreed = apiProvider.subBreedsList;
+                     var addedList = <String>{};
+                     uniqueList = subBreed.where((country) => addedList.add(country)).toList();
                       if (apiProvider.subBreedsList.isEmpty) {
                         ToastService.showToast(context,
                             'No Sub Breed available for the selected dog breed');
                       }
                     },
-                    selectedValue: apiProvider.subBreedsList.isNotEmpty?uniquelist[0]:'',
+                    selectedValue: apiProvider.subBreedsList.isNotEmpty?uniqueList[0]:'',
                     items: apiProvider.subBreedsList,
                     onChanged: (newValue) {
                       controllerProvider.subBreedController.text = newValue!;
