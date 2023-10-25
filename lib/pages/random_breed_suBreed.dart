@@ -1,6 +1,3 @@
-
-
-
 import 'package:deliveristo_test/components/imports/imports.dart';
 
 class RandomImageByBreedAndSubPage extends StatefulWidget {
@@ -11,8 +8,7 @@ class RandomImageByBreedAndSubPage extends StatefulWidget {
       _RandomImageByBreedAndSubPageState();
 }
 
-class _RandomImageByBreedAndSubPageState
-    extends State<RandomImageByBreedAndSubPage> {
+class _RandomImageByBreedAndSubPageState extends State<RandomImageByBreedAndSubPage> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
@@ -22,25 +18,21 @@ class _RandomImageByBreedAndSubPageState
     super.initState();
   }
 bool isLoading=false;
-  List<String> uniqueList=[];
   @override
   Widget build(BuildContext context) {
     var controllerProvider = Provider.of<SearchingController>(context);
     var apiProvider = Provider.of<FetchDogData>(context);
-
-
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
             onTap: (){
               controllerProvider.breedController.clear();
               controllerProvider.subBreedController.clear();
+              apiProvider.subBreedsList.clear();
               apiProvider.subBreedRandomImages.clear();
               Navigator.pop(context);
-
             },
             child: const Icon(Icons.arrow_back)),
-
         title: CustomText(
             title: 'Random image by breed and sub breed', color: Colors.white),
       ),
@@ -59,10 +51,8 @@ bool isLoading=false;
                       apiProvider.subBreedsList.clear();
                       controllerProvider.subBreedController.clear();
                       setState(() {
-
                       });
-                      print(
-                          'Selected: ${controllerProvider.breedController.text}');
+                      print('Selected: ${controllerProvider.breedController.text}');
                     },
                     hintText: 'Select Dog Breed',
                     controller: controllerProvider.breedController,
@@ -74,20 +64,15 @@ bool isLoading=false;
                     onTap: () async {
                      await apiProvider.getSubBreedList(
                           controllerProvider.breedController.text, context);
-                     List<String> subBreed = apiProvider.subBreedsList;
-                     var addedList = <String>{};
-                     uniqueList = subBreed.where((country) => addedList.add(country)).toList();
                       if (apiProvider.subBreedsList.isEmpty) {
-                        ToastService.showToast(context,
-                            'No Sub Breed available for the selected dog breed');
+                        ToastService.showToast(context, 'No Sub Breed available for the selected dog breed');
                       }
                     },
-                    selectedValue: apiProvider.subBreedsList.isNotEmpty?uniqueList[0]:'',
+                    selectedValue: apiProvider.subBreedsList.isNotEmpty?apiProvider.subBreedsList.first:'',
                     items: apiProvider.subBreedsList,
                     onChanged: (newValue) {
                       controllerProvider.subBreedController.text = newValue!;
-                      print(
-                          'Selected: ${controllerProvider.subBreedController.text}');
+                      print('Selected: ${controllerProvider.subBreedController.text}');
                     },
                     hintText: 'Select Sub-Breed',
                     controller: controllerProvider.subBreedController,
@@ -100,12 +85,11 @@ bool isLoading=false;
               onPressed: () async {
                 setState(() {
                   isLoading=true;
-
                 });
                  await apiProvider.getSubBreedRandomImages(
                     controllerProvider.breedController.text,
                     controllerProvider.subBreedController.text,
-                    context);
+                    context,);
                 setState(() {
                   isLoading=false;
 

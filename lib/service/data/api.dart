@@ -23,7 +23,6 @@ class FetchDogData extends ChangeNotifier{
   Future<void> getDogList() async {
     try {
       var client = http.Client();
-
       final http.Response response = await client.get(
         Uri.parse('${AppConfig.baseUrl}/breeds/list/all'),
         headers: {
@@ -97,47 +96,6 @@ class FetchDogData extends ChangeNotifier{
     }
   }
 
-  // Future<void> getAllImageListByBreed(String breed,context) async {
-  //   try {
-  //     var client = http.Client();
-  //
-  //     final http.Response response = await client.get(
-  //       Uri.parse('${AppConfig.baseUrl}/breed/$breed/images'),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     );
-  //     if (response.statusCode==200){
-  //       final responseData = json.decode(response.body);
-  //       var data =GetBreedImages.fromJson(responseData);
-  //       getAllBreedImages=data.message!.toList();
-  //       print(getAllBreedImages);
-  //       /// Filter out images with a 404 status code
-  //       // List<String> validImages = [];
-  //       // for (String? imageUrl in data.message!.toList()) {
-  //       //   if (imageUrl != null) {
-  //       //     final imageResponse = await http.get(Uri.parse(imageUrl));
-  //       //     if (imageResponse.statusCode != 404) {
-  //       //       showAllImages=true;
-  //       //       getAllBreedImages.add(imageUrl);
-  //       //     }
-  //       //
-  //       //   }
-  //       //
-  //       // }
-  //
-  //       notifyListeners();
-  //     }else{
-  //       ToastService.showToast(context, 'Error Occurred....Try again');
-  //       notifyListeners();
-  //     }
-  //
-  //
-  //   } catch (e) {
-  //     showAllImages=false;
-  //     print('Exception during fetching data: $e');
-  //   }
-  // }
   Future<void> getSubBreedList(String breed,context) async {
     try {
       var client = http.Client();
@@ -219,23 +177,3 @@ class FetchDogData extends ChangeNotifier{
   }
 
 }
-
-
-// Future<void> fetchImages() async {
-//   // Replace this URL with your API endpoint.
-//   final apiUrl = 'https://example.com/api/images';
-//
-//   final response = await http.get(Uri.parse(apiUrl);
-//
-//       if (response.statusCode == 200) {
-//     final List<String> imageUrls = List<String>.from(json.decode(response.body));
-//
-//     // Filter out images with a 404 status code.
-//     List<String> validImageUrls = [];
-//
-//     for (String imageUrl in imageUrls) {
-//       final imageResponse = await http.get(Uri.parse(imageUrl));
-//       if (imageResponse.statusCode != 404) {
-//         validImageUrls.add(imageUrl);
-//       }
-//     }

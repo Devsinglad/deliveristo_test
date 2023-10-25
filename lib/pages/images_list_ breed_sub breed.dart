@@ -11,6 +11,7 @@ class ImageListByBreedAndSuBBreed extends StatefulWidget {
 class _ImageListByBreedAndSuBBreedState
     extends State<ImageListByBreedAndSuBBreed> {
   bool isLoading = false;
+  List<String> uniqueList = [];
 
   @override
   void initState() {
@@ -20,7 +21,6 @@ class _ImageListByBreedAndSuBBreedState
     });
     super.initState();
   }
-  List<String> uniqueList=[];
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +50,13 @@ class _ImageListByBreedAndSuBBreedState
                   child: CustomBreedDropdownFormField(
                     items: apiProvider.breedsList,
                     onChanged: (newValue) {
+                      setState(() {
                       controllerProvider.breedController.text = newValue!;
-                      print('Selected: ${controllerProvider.breedController.text}');
-                      apiProvider.getSubBreedList(controllerProvider.breedController.text, context);
+                      apiProvider.subBreedsList.clear();
+                      apiProvider.subBreedAllImages.clear();
+                      controllerProvider.subBreedController.clear();
+                      isLoading=false;
+                      });
                     },
                     hintText: 'Select Dog Breed',
                     controller: controllerProvider.breedController,
@@ -64,20 +68,15 @@ class _ImageListByBreedAndSuBBreedState
                     onTap: () async {
                       await apiProvider.getSubBreedList(
                           controllerProvider.breedController.text, context);
-                      List<String> subBreed = apiProvider.subBreedsList;
-                      var addedList = <String>{};
-                      uniqueList = subBreed.where((country) => addedList.add(country)).toList();
                       if (apiProvider.subBreedsList.isEmpty) {
-                        ToastService.showToast(context,
-                            'No Sub Breed available for the selected dog breed');
+                        ToastService.showToast(context, 'No Sub Breed available for the selected dog breed');
                       }
                     },
-                    selectedValue: apiProvider.subBreedsList.isNotEmpty?uniqueList[0]:'',
+                    selectedValue: apiProvider.subBreedsList.isNotEmpty?apiProvider.subBreedsList.first:'',
                     items: apiProvider.subBreedsList,
                     onChanged: (newValue) {
                       controllerProvider.subBreedController.text = newValue!;
-                      print(
-                          'Selected: ${controllerProvider.subBreedController.text}');
+                      print('Selected: ${controllerProvider.subBreedController.text}');
                     },
                     hintText: 'Select Sub-Breed',
                     controller: controllerProvider.subBreedController,
@@ -109,8 +108,6 @@ class _ImageListByBreedAndSuBBreedState
               ),
             ),
             const SizedBox(height: 20),
-            Visibility(
-                visible: isLoading, child: const CircularProgressIndicator()),
             apiProvider.showAllSubImages
                 ? Expanded(
                     child: ListView.builder(
@@ -129,6 +126,8 @@ class _ImageListByBreedAndSuBBreedState
                     ),
                   )
                 : const SizedBox.shrink(),
+            Visibility(
+                visible: isLoading, child: const CircularProgressIndicator()),
           ],
         ),
       ),
