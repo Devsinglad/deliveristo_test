@@ -72,25 +72,11 @@ class FetchDogData extends ChangeNotifier{
         },
       );
       if (response.statusCode==200){
+        showAllImages=true;
         final responseData = json.decode(response.body);
         var data =GetBreedImages.fromJson(responseData);
         getAllBreedImages=data.message!.toList();
-        /// Filter out images with a 404 status code
-        // List<String> validImages = [];
-        // for (String? imageUrl in data.message!.toList()) { // Note the `?` here to handle nullable strings.
-        //   if (imageUrl != null) {
-        //     final imageResponse = await http.get(Uri.parse(imageUrl));
-        //     if (imageResponse.statusCode != 404) {
-        //       showAllImages=true;
-        //       getAllBreedImages.add(imageUrl);
-        //     }
-        //
-        //   }
-        //
-        // }
-
-
-
+        print(getAllBreedImages);
         notifyListeners();
       }else{
         ToastService.showToast(context, 'Error Occurred....Try again');
@@ -103,6 +89,48 @@ class FetchDogData extends ChangeNotifier{
       print('Exception during fetching data: $e');
     }
   }
+
+  // Future<void> getAllImageListByBreed(String breed,context) async {
+  //   try {
+  //     var client = http.Client();
+  //
+  //     final http.Response response = await client.get(
+  //       Uri.parse('${AppConfig.baseUrl}/breed/$breed/images'),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     );
+  //     if (response.statusCode==200){
+  //       final responseData = json.decode(response.body);
+  //       var data =GetBreedImages.fromJson(responseData);
+  //       getAllBreedImages=data.message!.toList();
+  //       print(getAllBreedImages);
+  //       /// Filter out images with a 404 status code
+  //       // List<String> validImages = [];
+  //       // for (String? imageUrl in data.message!.toList()) {
+  //       //   if (imageUrl != null) {
+  //       //     final imageResponse = await http.get(Uri.parse(imageUrl));
+  //       //     if (imageResponse.statusCode != 404) {
+  //       //       showAllImages=true;
+  //       //       getAllBreedImages.add(imageUrl);
+  //       //     }
+  //       //
+  //       //   }
+  //       //
+  //       // }
+  //
+  //       notifyListeners();
+  //     }else{
+  //       ToastService.showToast(context, 'Error Occurred....Try again');
+  //       notifyListeners();
+  //     }
+  //
+  //
+  //   } catch (e) {
+  //     showAllImages=false;
+  //     print('Exception during fetching data: $e');
+  //   }
+  // }
   Future<void> getSubBreedList(String breed,context) async {
     try {
       var client = http.Client();

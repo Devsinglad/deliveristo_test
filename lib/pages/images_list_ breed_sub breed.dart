@@ -110,7 +110,7 @@ class _ImageListByBreedAndSuBBreedState extends State<ImageListByBreedAndSuBBree
                   );
                 },
               ),
-            ):const CircularProgressIndicator(),
+            ):const SizedBox.shrink(),
           ],
         ),
       ),

@@ -122,7 +122,7 @@ class _RandomImageByBreedAndSubPageState
                   );
                 },
               ),
-            ):const CircularProgressIndicator(),
+            ):const SizedBox.shrink(),
           ],
         ),
       ),
