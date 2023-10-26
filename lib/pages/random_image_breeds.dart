@@ -1,5 +1,3 @@
-
-
 import 'package:deliveristo_test/components/imports/imports.dart';
 
 class RandomBreedPage extends StatefulWidget {

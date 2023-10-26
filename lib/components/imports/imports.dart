@@ -20,3 +20,4 @@ export 'package:deliveristo_test/service/api_model/radom_imges_byBreeds.dart';
 export 'package:deliveristo_test/service/api_model/sub_breed.dart';
 export 'package:deliveristo_test/service/data/AppConfig.dart';
 export 'package:deliveristo_test/service/api_model/dogbreeds.dart';
+export 'package:deliveristo_test/components/widgets/item_dashboard.dart';

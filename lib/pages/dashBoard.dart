@@ -1,6 +1,5 @@
 
 import 'package:deliveristo_test/components/imports/imports.dart';
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -57,15 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisSpacing: 40,
                 mainAxisSpacing: 30,
                 children: [
-                  itemDashboard(
+                  ItemDashboard(
                     title: 'Random image by breed',
                     img: 'assets/images/dog5.jpeg',
                     background: Colors.deepOrange,
                     onTap: () {
+                      print('Tapped on "Random Image by Breed"');
                       Navigator.push(context, MaterialPageRoute(builder: (_)=>const RandomBreedPage()));
                     },
                   ),
-                  itemDashboard(
+                  ItemDashboard(
                     title: 'Images list by breed',
                     img: 'assets/images/dog2.jpeg',
                     background: Colors.green,
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(context, MaterialPageRoute(builder: (_)=>const BreedImagePage()));
                     },
                   ),
-                  itemDashboard(
+                  ItemDashboard(
                     title: 'Random image by breed and sub breed',
                     img: 'assets/images/dog3.jpeg',
                     background: Colors.purple,
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(context, MaterialPageRoute(builder: (_)=>const RandomImageByBreedAndSubPage()));
                     },
                   ),
-                  itemDashboard(
+                  ItemDashboard(
                     title: 'Images list by breed and sub breed',
                     img: 'assets/images/dog4.jpeg',
                     background: Colors.brown,
@@ -98,49 +98,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  itemDashboard(
-          {required String title,
-          required String img,
-          required Color background,
-          onTap}) =>
-      InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    offset: const Offset(0, 5),
-                    color: Theme.of(context).primaryColor.withOpacity(.2),
-                    spreadRadius: 2,
-                    blurRadius: 5)
-              ]),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 50,
-                width: 50,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: background,
-                  shape: BoxShape.circle,
-                ),
-                child: Image.asset(img, fit: BoxFit.fill),
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  title.toUpperCase(),
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              )
-            ],
-          ),
-        ),
-      );
 }

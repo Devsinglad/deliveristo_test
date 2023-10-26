@@ -53,8 +53,7 @@ apiProvider.getDogList();
                             .where((breed) => breed
                                 .toLowerCase()
                                 .contains(value!.toLowerCase()))
-                            .toList() ??
-                        [];
+                            .toList();
                     showList = true;
                   });
                 },
