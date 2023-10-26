@@ -23,7 +23,6 @@ pages: Individual pages of the app.
 providers: Data providers using the Provider package for state management.
 services: Networking and data fetching services.
 tests: Widget tests for UI components and features.
-service: Utility functions and helper classes.
 main.dart: Entry point of the app.
 
 ## State Management
@@ -51,9 +50,9 @@ Ensure you have Flutter and Dart installed.
 git clone https://github.com/Devsinglad/deliveristo_test.git
 Navigate to the project directory:
 
-flutter pub get
-Run the app on your preferred device (emulator or physical device):
+flutter pub get:
 
+Run the app on your preferred device (emulator or physical device)
 
 flutter run
 
